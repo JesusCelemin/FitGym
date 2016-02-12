@@ -6,7 +6,7 @@ var gulp = require('gulp'),
     streamqueue = require('streamqueue'),
     autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync'),
-    reload      = browserSync.reload;
+    reload = browserSync.reload;
 
 var paths = {
   scripts: ['src/js/**/*.js'],
@@ -14,50 +14,43 @@ var paths = {
   scss: ['src/scss/**/*.scss']
 };
 
-// Sass task
 gulp.task('sass', function () {
   gulp.src(paths.scss)
     .pipe(sass())
     .pipe(autoprefixer('last 4 version'))
-    .pipe(gulp.dest('./build'))
-    .pipe(reload({stream: true}));
+    .pipe(gulp.dest('src/css'));
 });
 
-// CSS task
-gulp.task('minify-css', function () {
+gulp.task('scripts', function () {
+  //Minify and copy all Javascript
+  return streamqueue({objectMode: true},
+    gulp.src('src/js/vendor/modernizr-custom.js'),
+    gulp.src('src/js/index.js')
+  )
+    .pipe(uglify())
+    .pipe(concat('all.min.js'))
+    .pipe(gulp.dest('build/js'));
+});
+
+gulp.task('css', function () {
   return streamqueue({objectMode: true},
     gulp.src('src/css/normalize.css'),
     gulp.src('src/css/style.css')
   )
     .pipe(minifyCss())
     .pipe(concat('all.min.css'))
-    .pipe(gulp.dest('./build/css'));
+    .pipe(gulp.dest('build/css'))
+    .pipe(reload({stream: true}));
 });
 
-// JS task
-gulp.task('js', function () {
-  return streamqueue({objectMode: true},
-    gulp.src('src/js/vendor/modernizr.js'),
-    gulp.src('src/js/index.js')
-  )
-    .pipe(uglify())
-    .pipe(concat('all.min.js'))
-    .pipe(gulp.dest('./build/js'))
-})
-
-// Watch files for changes
-gulp.task('watch', ['browser-sync'], function () {
-  // Watch HTML files
-  gulp.watch('build/*.thml', reload);
-  // Watch Sass files
-  gulp.watch(paths.scss, ['scss']);
-  // Watch CSS files
-  gulp.watch(paths.css, ['minify-css']);
-  // Watch JS files
-  gulp.watch(paths.js, ['js']);
+gulp.task('watch', ['browser-sync'], function() {
+  gulp.watch('build/*.html', reload);
+  gulp.watch(paths.css, ['css']);
+  gulp.watch(paths.scss, ['sass']);
+  gulp.watch(paths.scripts, ['scripts']);
 });
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', function () {
   browserSync.init(['./build/css/**.*', './build/js/**.*'], {
     server: {
       baseDir: "./build"
@@ -65,5 +58,4 @@ gulp.task('browser-sync', function() {
   });
 });
 
-// Default task
-gulp.task('default', ['watch', 'browser-sync', 'js', 'sass', 'minify-css'])
+gulp.task('default', ['sass', 'css', 'scripts', 'watch', 'browser-sync']);
