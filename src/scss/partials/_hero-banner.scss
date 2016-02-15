@@ -1,0 +1,404 @@
+/* --------------------------------
+
+Slider
+
+-------------------------------- */
+
+.hero {
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.hero-banner__carousel {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  padding: 0;
+}
+
+.hero-banner__carousel li {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translateX(100%);
+}
+
+.hero-banner__carousel li.selected {
+  // this is visible slider
+  position: relative;
+  transform: translateX(0);
+}
+
+.hero-banner__carousel li.move-left {
+  // slide hidden on the left
+  transform: translateX(-100%);
+}
+
+.hero-banner__carousel.is-moving,
+.hero-banner__carousel.selected {
+  // the is-moving class is assigned to the slide which is moving outside the viewport
+  transition: transform 0.5s;
+}
+
+@media #{$tablet} {
+  .hero-banner__carousel {
+    height: 500px;
+  }
+}
+
+@media #{$desktop} {
+  .hero-banner__carousel {
+    height: 680px;
+  }
+}
+
+/* --------------------------------
+
+Single slide style
+
+-------------------------------- */
+
+.hero-banner__carousel li {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.hero-banner__carousel li:first-of-type {
+  background-color: #2c343b;
+}
+
+.hero-banner__carousel li:nth-of-type(2) {
+  background-color: #3d4952;
+}
+
+.hero-banner__carousel li:nth-of-type(3) {
+  background-color: #586775;
+}
+.hero-banner__carousel li:nth-of-type(4) {
+  background-color: #586775;
+}
+.hero-banner__carousel li:nth-of-type(5) {
+  background-color: #586775;
+}
+
+
+.hero-banner__carousel .hero-banner__carousel__item {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  /* this padding is used to align the text */
+
+  padding-top: 100px;
+  text-align: center;
+  /* Force Hardware Acceleration in WebKit */
+
+  transform: translateZ(0);
+}
+
+.hero-banner__carousel h2,
+.hero-banner__carousel p {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  line-height: 1.2;
+  margin: 0 auto 14px;
+  color: #ffffff;
+  width: 90%;
+  max-width: 400px;
+}
+
+.hero-banner__carousel h2 {
+  font-size: 2.4rem;
+}
+
+.hero-banner__carousel p {
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+
+.hero-banner__carousel .hero-btn {
+  display: inline-block;
+  padding: 1em 1.2em;
+  margin-top: .8em;
+  background-color: #ffcf21;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-transform: uppercase;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s;
+}
+
+.hero-banner__carousel .hero-btn:nth-of-type(2) {
+  margin-left: 1em;
+}
+
+.no-touch .hero-banner__carousel .hero-btn:hover {
+  background-color: #d44457;
+}
+
+@media #{$tablet} {
+  .hero-banner__carousel li:nth-of-type(2) {
+    background-image: none;
+  }
+
+  .hero-banner__carousel li:nth-of-type(3) {
+    background-image: none;
+  }
+  .hero-banner__carousel li:nth-of-type(4) {
+    background-image: none;
+  }
+
+  .hero-banner__carousel .hero-banner__carousel__item {
+    padding-top: 150px;
+  }
+
+  .hero-banner__carousel h2,
+  .hero-banner__carousel p {
+    max-width: 520px;
+  }
+  .hero-banner__carousel h2 {
+    font-size: 2.4em;
+    font-weight: 300;
+  }
+  .hero-banner__carousel .hero-btn {
+    font-size: 1.4rem;
+  }
+}
+
+@media #{$desktop} {
+  .hero-banner__carousel .hero-banner__carousel__item {
+    padding-top: 220px;
+  }
+  .hero-banner__carousel h2,
+  .hero-banner__carousel p {
+    margin-bottom: 20px;
+  }
+  .hero-banner__carousel h2 {
+    font-size: 3.2em;
+  }
+  .hero-banner__carousel p {
+    font-size: 1.6rem;
+  }
+}
+
+/* --------------------------------
+
+Single slide animation
+
+-------------------------------- */
+@media #{$tablet} {
+  .hero-banner__carousel .hero-banner__carousel__item h2,
+  .hero-banner__carousel .hero-banner__carousel__item p,
+  .hero-banner__carousel .hero-banner__carousel__item .hero-btn {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  .hero-banner__carousel .move-left .hero-banner__carousel__item h2,
+  .hero-banner__carousel .move-left .hero-banner__carousel__item p,
+  .hero-banner__carousel .move-left .hero-banner__carousel__item .hero-btn {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  .hero-banner__carousel .selected .hero-banner__carousel__item h2,
+  .hero-banner__carousel .selected .hero-banner__carousel__item p,
+  .hero-banner__carousel .selected .hero-banner__carousel__item .hero-btn {
+    /* this is the visible slide */
+
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .hero-banner__carousel li.is-moving .hero-banner__carousel__item h2,
+  .hero-banner__carousel li.is-moving .hero-banner__carousel__item p,
+  .hero-banner__carousel li.is-moving .hero-banner__carousel__item .hero-btn {
+    /* this is the slide moving outside the viewport
+    wait for the end of the transition on the li parent before set opacity to 0 and translate to 100px/-100px */
+
+    transition: opacity 0s 0.5s, transform 0s 0.5s;
+  }
+  .hero-banner__carousel li.selected h2 {
+    transition: opacity 0.4s 0.2s, transform 0.5s 0.2s;
+  }
+  .hero-banner__carousel li.selected p {
+    transition: opacity 0.4s 0.3s, transform 0.5s 0.3s;
+  }
+  .hero-banner__carousel li.selected .hero-btn {
+    transition: opacity 0.4s 0.4s, transform 0.5s 0.4s, background-color 0.2s 0s;
+  }
+}
+
+/* --------------------------------
+
+Slider navigation
+
+-------------------------------- */
+
+.hero-footer__carousel {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  z-index: 2;
+  text-align: center;
+  height: 55px;
+  background-color: #ffcf21;
+}
+
+.hero-footer__carousel nav,
+.hero-footer__carousel ul,
+.hero-footer__carousel li,
+.hero-footer__carousel a {
+  height: 100%;
+}
+
+.hero-footer__carousel nav {
+  display: inline-block;
+  position: relative;
+}
+
+.hero-footer__carousel .cd-marker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 100%;
+  color: #ffffff;
+  background-color: #1a2127;
+  box-shadow: inset 0 2px 0 currentColor;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hero-footer__carousel .cd-marker.item-2 {
+  transform: translateX(100%);
+}
+
+.hero-footer__carousel .cd-marker.item-3 {
+  transform: translateX(200%);
+}
+
+.hero-footer__carousel ul::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.hero-footer__carousel li {
+  display: inline-block;
+  width: 60px;
+  float: left;
+}
+
+.hero-footer__carousel li.selected a {
+  color: #ffffff;
+}
+
+.no-touch .hero-footer__carousel li.selected a:hover {
+  background-color: transparent;
+}
+
+.hero-footer__carousel a {
+  text-decoration: none;
+  display: block;
+  position: relative;
+  padding-top: 35px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: black;
+  transition: background-color 0.2s;
+}
+
+.hero-footer__carousel a::before {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 8px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  background: url(../assets/cd-icon-navigation.svg) no-repeat 0 0;
+}
+
+.no-touch .hero-footer__carousel a:hover {
+  background-color: rgba(0, 1, 1, 0.5);
+}
+
+.hero-footer__carousel li:first-of-type a::before {
+  background-position: 0 0;
+}
+
+.hero-footer__carousel li.selected:first-of-type a::before {
+  background-position: 0 -24px;
+}
+
+.hero-footer__carousel li:nth-of-type(2) a::before {
+  background-position: -24px 0;
+}
+
+.hero-footer__carousel li.selected:nth-of-type(2) a::before {
+  background-position: -24px -24px;
+}
+
+.hero-footer__carousel li:nth-of-type(3) a::before {
+  background-position: -48px 0;
+}
+
+.hero-footer__carousel li.selected:nth-of-type(3) a::before {
+  background-position: -48px -24px;
+}
+
+.hero-footer__carousel li:nth-of-type(4) a::before {
+  background-position: -72px 0;
+}
+
+.hero-footer__carousel li.selected:nth-of-type(4) a::before {
+  background-position: -72px -24px;
+}
+
+.hero-footer__carousel li:nth-of-type(5) a::before {
+  background-position: -96px 0;
+}
+
+.hero-footer__carousel li.selected:nth-of-type(5) a::before {
+  background-position: -96px -24px;
+}
+
+@media #{$tablet} {
+  .hero-footer__carousel {
+    height: 80px;
+  }
+  .hero-footer__carousel .cd-marker,
+  .hero-footer__carousel li {
+    width: 95px;
+  }
+  .hero-footer__carousel a {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+  }
+  .hero-footer__carousel a::before {
+    top: 18px;
+  }
+}
+
+/* --------------------------------
+
+Javascript disabled
+
+-------------------------------- */
+
+.no-js .hero-banner__carousel li {
+  display: none;
+}
+
+.no-js .hero-banner__carousel li.selected {
+  display: block;
+}
+
+.no-js .hero-footer__carousel {
+  display: none;
+}

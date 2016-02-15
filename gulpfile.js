@@ -25,6 +25,7 @@ gulp.task('scripts', function () {
   //Minify and copy all Javascript
   return streamqueue({objectMode: true},
     gulp.src('src/js/vendor/modernizr-custom.js'),
+    gulp.src('src/js/hero-banner.js'),
     gulp.src('src/js/index.js')
   )
     .pipe(uglify())
